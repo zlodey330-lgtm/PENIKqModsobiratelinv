@@ -8,8 +8,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 public final class Config {
-    /** Нижняя граница: общее время восстановления, секунд. Меньше нельзя. */
-    public static final int MIN_SECONDS = 45;
+    /** Диапазон общего времени восстановления, секунд: от 5 до 50. */
+    public static final int MIN_SECONDS = 5;
+    public static final int MAX_SECONDS = 50;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
 
@@ -20,6 +21,10 @@ public final class Config {
 
     public static Config get() {
         return instance;
+    }
+
+    private static int clamp(int v) {
+        return Math.min(MAX_SECONDS, Math.max(MIN_SECONDS, v));
     }
 
     private static Path path() {
@@ -36,16 +41,17 @@ public final class Config {
         } catch (Exception e) {
             InvPresetClient.LOG.warn("Не удалось прочитать конфиг", e);
         }
-        instance.totalSeconds = Math.max(MIN_SECONDS, instance.totalSeconds);
+        instance.totalSeconds = clamp(instance.totalSeconds);
         save();
     }
 
     public static void save() {
         try {
-            instance.totalSeconds = Math.max(MIN_SECONDS, instance.totalSeconds);
+            instance.totalSeconds = clamp(instance.totalSeconds);
             Files.writeString(path(), GSON.toJson(instance));
         } catch (Exception e) {
             InvPresetClient.LOG.warn("Не удалось сохранить конфиг", e);
         }
     }
 }
+ 
