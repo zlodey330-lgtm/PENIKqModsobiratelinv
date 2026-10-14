@@ -42,16 +42,17 @@ public class InvPresetClient implements ClientModInitializer {
 
         ClientTickEvents.END_CLIENT_TICK.register(Restorer::tick);
 
-        // /invpreset delay <секунды>  (минимум 45)
+        // /invpreset delay <секунды>  (от 5 до 50)
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) ->
                 dispatcher.register(ClientCommandManager.literal("invpreset")
                         .then(ClientCommandManager.literal("delay")
                                 .executes(ctx -> {
                                     ctx.getSource().sendFeedback(Text.literal(
-                                            "[InvPreset] Время восстановления: " + Config.get().totalSeconds + " сек (мин. " + Config.MIN_SECONDS + ")"));
+                                            "[InvPreset] Время восстановления: " + Config.get().totalSeconds
+                                                    + " сек (допустимо " + Config.MIN_SECONDS + "-" + Config.MAX_SECONDS + ")"));
                                     return 1;
                                 })
-                                .then(ClientCommandManager.argument("seconds", IntegerArgumentType.integer(Config.MIN_SECONDS, 3600))
+                                .then(ClientCommandManager.argument("seconds", IntegerArgumentType.integer(Config.MIN_SECONDS, Config.MAX_SECONDS))
                                         .executes(ctx -> {
                                             int v = IntegerArgumentType.getInteger(ctx, "seconds");
                                             Config.get().totalSeconds = v;
