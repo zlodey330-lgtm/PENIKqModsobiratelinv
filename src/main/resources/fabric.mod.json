@@ -1,19 +1,28 @@
 {
-  "schemaVersion": 1,
+  "schema_version": 1,
   "id": "penikqmodsobiratelinv",
   "version": "${version}",
   "name": "PENIKqModsobiratelinv",
-  "description": "Save and restore inventory layout with one key (client-side).",
-  "authors": ["you"],
+  "description": "Mod with configurable speed limits from 5 to 50",
+  "authors": [
+    "zlodey330"
+  ],
+  "contact": {},
   "license": "MIT",
-  "environment": "client",
+  "icon": "assets/penikqmodsobiratelinv/icon.png",
+  "environment": "*",
   "entrypoints": {
-    "client": ["dev.invpreset.InvPresetClient"]
+    "main": [
+      "dev.invpreset.InvPresetClient"
+    ]
   },
+  "mixins": [
+    "penikqmodsobiratelinv.mixins.json"
+  ],
   "depends": {
-    "fabricloader": ">=0.14.21",
-    "minecraft": "1.20.1",
-    "java": ">=17",
+    "fabricloader": ">=0.16.0",
+    "minecraft": "~1.21.1",
+    "java": ">=21",
     "fabric-api": "*"
   }
 }
